@@ -33,3 +33,6 @@ npm-debug.log*
 # 临时文件
 *.tmp
 *.temp
+
+# IDE 配置和文档
+.trae/
