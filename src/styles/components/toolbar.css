@@ -1,0 +1,308 @@
+/* 工具栏样式 - 左侧隐藏式浮动工具栏 */
+
+/* 触发区域 - 用于检测鼠标靠近 */
+.toolbar-trigger-zone {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 100vh;
+  z-index: 99;
+  /* 调试时可取消注释查看区域 */
+  /* background: rgba(201, 169, 97, 0.1); */
+}
+
+.left-toolbar {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%) translateX(-100%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, var(--bg-paper) 0%, var(--bg-cream) 100%);
+  border: 1px solid var(--border-light);
+  border-left: none;
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.35s ease;
+  overflow: hidden;
+  box-shadow: none;
+  backdrop-filter: blur(10px);
+  padding: 12px;
+  width: 160px;
+}
+
+/* 鼠标悬浮在触发区域或工具栏本身时显示 */
+.toolbar-trigger-zone:hover + .left-toolbar,
+.left-toolbar:hover,
+.left-toolbar.force-show {
+  transform: translateY(-50%) translateX(0);
+  box-shadow: var(--shadow-xl), 
+              0 0 40px rgba(201, 169, 97, 0.15);
+}
+
+/* 展开指示条 - 显示工具栏存在 */
+.left-toolbar::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -4px;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 60px;
+  background: linear-gradient(180deg, 
+    transparent 0%, 
+    var(--color-gold) 20%, 
+    var(--color-gold) 80%, 
+    transparent 100%
+  );
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity 0.3s ease, right 0.3s ease;
+}
+
+/* 工具栏隐藏时显示指示条 */
+.left-toolbar:not(:hover) {
+  /* 保持隐藏状态的样式 */
+}
+
+/* 触发区域悬浮时的指示条 */
+.toolbar-trigger-zone:hover + .left-toolbar::before {
+  opacity: 0;
+}
+
+/* 悬浮提示箭头 */
+.toolbar-hover-hint {
+  position: fixed;
+  top: 50%;
+  left: 4px;
+  transform: translateY(-50%);
+  z-index: 98;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.toolbar-hover-hint::before {
+  content: '›';
+  font-size: 20px;
+  color: var(--color-gold);
+  animation: hintPulse 2s ease-in-out infinite;
+}
+
+.toolbar-hover-hint::after {
+  content: '工具';
+  font-size: 10px;
+  color: var(--text-muted);
+  writing-mode: vertical-rl;
+  letter-spacing: 2px;
+}
+
+@keyframes hintPulse {
+  0%, 100% { 
+    opacity: 0.4;
+    transform: translateX(0);
+  }
+  50% { 
+    opacity: 0.8;
+    transform: translateX(3px);
+  }
+}
+
+/* 鼠标靠近时隐藏提示 */
+.toolbar-trigger-zone:hover ~ .toolbar-hover-hint,
+.left-toolbar:hover ~ .toolbar-hover-hint {
+  opacity: 0;
+}
+
+.toolbar-toggle {
+  width: 100%;
+  padding: 8px;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 12px;
+  margin-bottom: 12px;
+  transition: var(--transition-fast);
+  color: white;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  display: none; /* 隐藏原来的展开/收起按钮 */
+}
+
+.toolbar-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.toolbar-btn {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--bg-paper);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 13px;
+  transition: var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-secondary);
+  position: relative;
+  overflow: hidden;
+}
+
+.toolbar-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(201, 169, 97, 0.15), transparent);
+  transition: var(--transition-slow);
+}
+
+.toolbar-btn:hover::before {
+  left: 100%;
+}
+
+.toolbar-btn:hover {
+  background: var(--bg-cream);
+  border-color: var(--color-gold);
+  color: var(--color-primary);
+  transform: translateX(4px);
+  box-shadow: var(--shadow-sm);
+}
+
+.toolbar-btn:active {
+  transform: translateX(2px) scale(0.98);
+}
+
+.toolbar-btn .btn-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+  width: 20px;
+  text-align: center;
+}
+
+.toolbar-btn .btn-text {
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* API 状态指示器 */
+.api-status-indicators {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transition: var(--transition-fast);
+}
+
+.status-dot.deepseek {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+}
+
+.status-dot.qwen {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  box-shadow: 0 0 8px rgba(249, 115, 22, 0.5);
+}
+
+.status-dot.none {
+  background: var(--border-medium);
+  box-shadow: none;
+}
+
+/* 折叠状态（保留但不再使用） */
+.left-toolbar.collapsed {
+  width: 160px;
+  padding: 12px;
+}
+
+.left-toolbar.expanded {
+  width: 160px;
+  padding: 12px;
+}
+
+/* 平板和手机适配 */
+@media (max-width: 1024px) {
+  .toolbar-trigger-zone {
+    display: none;
+  }
+  
+  .toolbar-hover-hint {
+    display: none;
+  }
+  
+  .left-toolbar {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    margin: 12px;
+    width: calc(100% - 24px) !important;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-md);
+  }
+  
+  .left-toolbar:hover {
+    transform: none;
+  }
+  
+  .toolbar-buttons {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  
+  .toolbar-btn {
+    width: auto;
+    flex: 0 0 auto;
+    padding: 10px 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .left-toolbar {
+    margin: 0;
+    width: 100% !important;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+  
+  .toolbar-buttons {
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .toolbar-btn {
+    padding: 10px 14px;
+  }
+  
+  .toolbar-btn .btn-text {
+    display: none;
+  }
+  
+  .toolbar-btn .btn-icon {
+    font-size: 18px;
+  }
+}

@@ -1,0 +1,415 @@
+/* 聊天面板样式 - 优雅的对话界面 */
+
+.chat-history {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px;
+  background: linear-gradient(180deg, var(--bg-paper) 0%, var(--bg-cream) 100%);
+  min-height: 0;
+}
+
+/* 消息气泡 */
+.message {
+  margin-bottom: 16px;
+  padding: 14px 18px;
+  border-radius: var(--radius-lg);
+  max-width: 90%;
+  word-wrap: break-word;
+  animation: messageSlide 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+
+@keyframes messageSlide {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 用户消息 */
+.message.user {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  color: white;
+  margin-left: auto;
+  border-bottom-right-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+}
+
+.message.user::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: -6px;
+  width: 12px;
+  height: 12px;
+  background: var(--color-primary-light);
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+/* AI消息 */
+.message.agent {
+  background: var(--bg-paper);
+  margin-right: auto;
+  border: 1px solid var(--border-light);
+  border-bottom-left-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.message.agent::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: -3px;
+  width: 6px;
+  height: 6px;
+  background: var(--color-gold);
+  border-radius: 50%;
+}
+
+/* Markdown 内容样式 */
+.message.agent .markdown-content {
+  line-height: 1.75;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+/* DeepSeek Reasoner 思考过程样式 */
+.reasoning-block {
+  margin-bottom: 16px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+}
+
+.reasoning-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: var(--color-primary-dark);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.reasoning-header:hover {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.reasoning-content {
+  padding: 14px;
+  background: var(--bg-paper);
+  border-top: 1px solid var(--border-light);
+  font-size: 13px;
+  color: var(--text-secondary);
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.reasoning-content p {
+  margin: 8px 0;
+}
+
+.reasoning-content code {
+  background: var(--bg-cream);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+/* 错误消息样式 */
+.message.agent .markdown-content h2:first-child,
+.message.agent .markdown-content strong:first-child {
+  color: inherit;
+}
+
+.message.agent .markdown-content hr {
+  border: none;
+  border-top: 1px dashed var(--border-light);
+  margin: 16px 0;
+}
+
+.message.agent .markdown-content ol,
+.message.agent .markdown-content ul {
+  margin: 8px 0;
+  padding-left: 24px;
+}
+
+.message.agent .markdown-content li {
+  margin: 4px 0;
+  line-height: 1.6;
+}
+
+.message.agent .markdown-content code {
+  background: var(--bg-cream);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: 'Consolas', 'Monaco', monospace;
+}
+
+.message.agent .markdown-content h1,
+.message.agent .markdown-content h2,
+.message.agent .markdown-content h3,
+.message.agent .markdown-content h4,
+.message.agent .markdown-content h5,
+.message.agent .markdown-content h6 {
+  margin: 16px 0 10px 0;
+  color: var(--color-primary);
+  font-family: var(--font-serif);
+  font-weight: 600;
+}
+
+.message.agent .markdown-content h1 { font-size: 1.4em; }
+.message.agent .markdown-content h2 { font-size: 1.25em; }
+.message.agent .markdown-content h3 { font-size: 1.1em; }
+
+.message.agent .markdown-content p {
+  margin: 10px 0;
+}
+
+.message.agent .markdown-content code {
+  background: linear-gradient(135deg, var(--bg-cream) 0%, var(--bg-warm) 100%);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  color: var(--color-accent);
+  border: 1px solid var(--border-light);
+}
+
+.message.agent .markdown-content pre {
+  background: var(--bg-dark);
+  padding: 16px;
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  margin: 14px 0;
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.message.agent .markdown-content pre code {
+  background: transparent;
+  padding: 0;
+  color: #e2e8f0;
+  border: none;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.message.agent .markdown-content ul,
+.message.agent .markdown-content ol {
+  margin: 10px 0;
+  padding-left: 24px;
+}
+
+.message.agent .markdown-content li {
+  margin: 6px 0;
+  position: relative;
+}
+
+.message.agent .markdown-content li::marker {
+  color: var(--color-gold);
+}
+
+.message.agent .markdown-content blockquote {
+  border-left: 3px solid var(--color-gold);
+  padding: 12px 16px;
+  margin: 14px 0;
+  background: linear-gradient(135deg, var(--bg-cream) 0%, var(--bg-warm) 100%);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.message.agent .markdown-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 14px 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.message.agent .markdown-content th,
+.message.agent .markdown-content td {
+  border: 1px solid var(--border-light);
+  padding: 10px 14px;
+  text-align: left;
+}
+
+.message.agent .markdown-content th {
+  background: linear-gradient(135deg, var(--bg-cream) 0%, var(--bg-warm) 100%);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.message.agent .markdown-content tr:hover td {
+  background: var(--bg-cream);
+}
+
+/* 聊天输入区域 */
+.chat-input {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  background: linear-gradient(180deg, var(--bg-cream) 0%, var(--bg-warm) 100%);
+  border-top: 1px solid var(--border-light);
+}
+
+.input-row {
+  margin-bottom: 4px;
+}
+
+.mode-model-selectors {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+}
+
+.mode-selector,
+.model-selector {
+  padding: 8px 12px;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--bg-paper);
+  cursor: pointer;
+  flex: 1;
+  transition: var(--transition-fast);
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+}
+
+.mode-selector:hover,
+.model-selector:hover {
+  border-color: var(--color-gold);
+  background: var(--bg-cream);
+}
+
+.mode-selector:focus,
+.model-selector:focus {
+  outline: none;
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 3px rgba(201, 169, 97, 0.2);
+}
+
+.input-options {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.input-options select {
+  padding: 10px 14px;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  min-width: 120px;
+  font-size: 13px;
+  background: var(--bg-paper);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.input-options select:hover {
+  border-color: var(--color-gold);
+}
+
+.input-options select:focus {
+  outline: none;
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 3px rgba(201, 169, 97, 0.2);
+}
+
+.input-field {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.input-field input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  font-size: 14px;
+  transition: var(--transition-fast);
+  background: var(--bg-paper);
+  font-family: var(--font-sans);
+}
+
+.input-field input:focus {
+  outline: none;
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 3px rgba(201, 169, 97, 0.2);
+}
+
+.input-field input::placeholder {
+  color: var(--text-light);
+}
+
+.input-field button {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: var(--transition-fast);
+  box-shadow: var(--shadow-md);
+  font-family: var(--font-sans);
+  letter-spacing: 0.5px;
+}
+
+.input-field button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+}
+
+.input-field button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.input-field button:disabled {
+  background: var(--border-medium);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* 流式响应动画 */
+.message.agent em {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+}
+
+.message.agent em::after {
+  content: '';
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--color-gold);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
